@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gautamarora04/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -22,5 +23,7 @@ func Connect() {
 		panic("Could not connect to Database")
 	}
 	DB = database
-
+	database.AutoMigrate(
+		&models.User{},
+	)
 }
