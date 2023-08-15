@@ -4,24 +4,19 @@ import (
 	"log"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/gautamarora04/database"
 	"github.com/gautamarora04/models"
+	"github.com/gautamarora04/util"
 	"github.com/gofiber/fiber/v2"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/golang-jwt/jwt"
 )
 
 // to check whether email is valid or not to save bunch of invalid records
 func isEmailValid(email string) bool {
 	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 	return emailRegex.MatchString(email)
-}
-
-// to encrypt password before saving into database usihg golang bcrypt this is basically hashing, not encryting.
-// For revison purpose, https://stackoverflow.com/questions/18084595/how-to-decrypt-hash-stored-by-bcrypt
-func HashPassword(password string) []byte {
-	bytes, _ := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return bytes
 }
 
 func Register(c *fiber.Ctx) error {
@@ -58,8 +53,8 @@ func Register(c *fiber.Ctx) error {
 		LastName:  data["last_name"].(string),
 		Email:     data["email"].(string),
 		Phone:     data["phone"].(string),
-		Password:  HashPassword(data["password"].(string)),
 	}
+	user.HashPassword(data["password"].(string))
 	err := database.DB.Create(&user)
 	if err != nil {
 		log.Println(err)
@@ -70,4 +65,49 @@ func Register(c *fiber.Ctx) error {
 		"message": "Account created Successfully",
 	})
 
+}
+
+func Login(c *fiber.Ctx) error {
+	var data map[string]string
+	if err := c.BodyParser(&data); err != nil {
+		return err
+	}
+
+	var user models.User
+	database.DB.Where("email=?", data["email"]).First(&user)
+	if user.ID == 0 {
+		c.Status(404)
+		return c.JSON(fiber.Map{
+			"message": "Email Id is not registed, Kindly create account",
+		})
+	}
+	err := user.CheckPassword(data["password"])
+
+	if err != nil {
+		c.Status(400)
+		return c.JSON(fiber.Map{
+			"message": "Wrong Password",
+		})
+	}
+	token, err := util.GenerateJWT(user.Email)
+	if err != nil {
+		c.Status(fiber.StatusInternalServerError)
+		return nil
+	}
+	cookie := fiber.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Expires:  time.Now().Add(24 * time.Hour),
+		HTTPOnly: true,
+	}
+	c.Cookie(&cookie)
+	c.Status(200)
+	return c.JSON(fiber.Map{
+		"message": "Login Successful",
+		"user":    user,
+	})
+}
+
+type Claims struct {
+	jwt.StandardClaims
 }

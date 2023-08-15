@@ -18,12 +18,13 @@ func Connect() {
 		log.Fatal("Error loading .env file")
 	}
 	dsn := os.Getenv("DSN")
-	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) //gorm is a library for golang for connecting to database
 	if err != nil {
 		panic("Could not connect to Database")
 	}
 	DB = database
 	database.AutoMigrate(
 		&models.User{},
+		&models.Blog{},
 	)
 }
