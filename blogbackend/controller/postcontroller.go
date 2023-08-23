@@ -76,3 +76,23 @@ func MyPost(c *fiber.Ctx) error {
 	database.DB.Model(&blog).Where("user_id=?", id).Preload("User").Find(&blog)
 	return c.JSON(blog)
 }
+
+func DeletePost(c *fiber.Ctx) error {
+	id, _ := strconv.Atoi(c.Params("id"))
+	var blog models.Blog
+
+	database.DB.Where("id=?", id).Preload("User").First(&blog)
+
+	if blog.User.ID == 0 {
+		c.Status(400)
+		return c.JSON(fiber.Map{
+			"message": "Record Not found!!",
+		})
+	}
+	database.DB.Delete(&blog)
+	c.Status(200)
+	return c.JSON(fiber.Map{
+		"message": "Post Delete Successfully",
+	})
+
+}
