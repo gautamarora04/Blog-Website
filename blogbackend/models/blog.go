@@ -5,6 +5,6 @@ type Blog struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Image       string `json:"image"`
-	UserID      string `json:"userid"`
+	UserID      string `json:"user_id"`
 	User        User   `gorm:"foreignKey:UserID"`
 }

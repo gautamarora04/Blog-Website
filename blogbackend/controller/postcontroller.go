@@ -73,8 +73,6 @@ func MyPost(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 	id, _ := util.ParseJWT(cookie)
 	var blog []models.Blog
-	database.DB.Model(&blog).Where("userid=?", id).Preload("User").Find(&blog)
-	return c.JSON(fiber.Map{
-		"id": id,
-	})
+	database.DB.Model(&blog).Where("user_id=?", id).Preload("User").Find(&blog)
+	return c.JSON(blog)
 }
