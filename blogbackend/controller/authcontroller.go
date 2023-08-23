@@ -3,6 +3,7 @@ package controller
 import (
 	"log"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -89,7 +90,7 @@ func Login(c *fiber.Ctx) error {
 			"message": "Wrong Password",
 		})
 	}
-	token, err := util.GenerateJWT(user.Email)
+	token, err := util.GenerateJWT(strconv.Itoa(int(user.ID)))
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
 		return nil
@@ -100,11 +101,17 @@ func Login(c *fiber.Ctx) error {
 		Expires:  time.Now().Add(24 * time.Hour),
 		HTTPOnly: true,
 	}
+
 	c.Cookie(&cookie)
 	c.Status(200)
+
+	cookie := c.Cookies("jwt")
+	id, _ := util.ParseJWT(cookie)
+
 	return c.JSON(fiber.Map{
 		"message": "Login Successful",
 		"user":    user,
+		// "id": user.ID,
 	})
 }
 
