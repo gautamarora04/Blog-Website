@@ -1,5 +1,6 @@
 module github.com/gautamarora04
 
+// +hiroku goVersion go1.20 
 go 1.20
 
 require (
