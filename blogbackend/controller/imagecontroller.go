@@ -8,6 +8,8 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 
+const reactPublicFolder = "C:/Users/gauta/Downloads/reactlogin-master/reactlogin-master/public"
+
 // we will add random string in start of file name so that it will not create any overlap with images with same name
 
 func randletter(n int) string {
@@ -28,11 +30,16 @@ func UploadImage(c *fiber.Ctx) error {
 
 	for _, file := range files {
 		filename = randletter(5) + "-" + file.Filename
-		if err := c.SaveFile(file, "./upload/"+filename); err != nil {
-			return nil
+		if err := c.SaveFile(file, reactPublicFolder+"/upload/"+filename); err != nil {
+			// return nil
+			return c.JSON(fiber.Map{
+				"url":     filename,
+				"message": "error",
+			})
 		}
 	}
 	return c.JSON(fiber.Map{
-		"url": "localhost:3000/api/upload/" + filename,
+		// "url": "localhost:3000/api/upload/" + filename,
+		"url": filename,
 	})
 }
