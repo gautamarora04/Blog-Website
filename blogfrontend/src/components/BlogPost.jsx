@@ -47,7 +47,9 @@ const BlogPost = () => {
                   <img
                     alt="Placeholder"
                     class="block h-72 w-full"
-                    src={blog?.image}
+                    // src={blog?.image}
+                    src={"/upload" + (blog?.image).slice(25)} 
+                    
                   />
                 </a>
 
@@ -73,7 +75,9 @@ const BlogPost = () => {
                     <img
                       alt="Placeholder"
                       class="block rounded-full w-5 h-5"
-                      src={blog?.image}
+                      // src={blog?.image}
+                    src={"/upload" + (blog?.image).slice(25)} 
+
                     />
                     <p class="ml-2 text-sm">
                       {blog?.user?.first_name} {blog?.user?.last_name}

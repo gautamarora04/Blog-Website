@@ -109,6 +109,20 @@ func Login(c *fiber.Ctx) error {
 		// "id": user.ID,
 	})
 }
+func Logout(c *fiber.Ctx) error {
+	// Clear the JWT cookie by setting its expiration to a past time
+	cookie := fiber.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour), // Set the expiration in the past
+		HTTPOnly: true,
+	}
+	c.Cookie(&cookie)
+
+	return c.JSON(fiber.Map{
+		"message": "Logged out successfully",
+	})
+}
 
 type Claims struct {
 	jwt.StandardClaims

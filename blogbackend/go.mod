@@ -1,6 +1,6 @@
 module github.com/gautamarora04
 
-// +heroku goVersion go1.20 
+// +heroku goVersion go1.20
 go 1.20
 
 require (

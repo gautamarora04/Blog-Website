@@ -115,10 +115,13 @@ const PersonalBlog = () => {
                   <img
                     alt="Placeholder"
                     className="block h-72 w-full"
-                    src={blog?.image}
+                    // src={blog?.image}
+                    src={"/upload" + (blog?.image).slice(25)} 
+                    // src = "/upload-image.svg"
+                    // src = "/upload/anfhb-image.png"
                   />
                 </a>
-
+            
                 <header className="flex items-center justify-between leading-tight p-2 md:p-4">
                   <h1 className="text-lg">
                     <a

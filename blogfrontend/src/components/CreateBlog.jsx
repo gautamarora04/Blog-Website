@@ -110,8 +110,8 @@ const CreateBlog = () => {
         console.log("Image Url",response );
         setLoadingData(false);
         setImageData(response?.data?.url);
-        // openSnackbar("Image uploaded successfully");
-        openSnackbar("Bhai hogayi Image Upload");
+        openSnackbar("Image uploaded successfully");
+        // openSnackbar("Bhai hogayi Image Upload");
 
       })
       .catch((error) => {
