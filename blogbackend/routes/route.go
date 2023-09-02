@@ -14,7 +14,7 @@ func Serve(app *fiber.App) {
 	app.Post("/api/post", controller.CreatePost)
 	app.Get("/api/allpost", controller.AllPost)
 	app.Get("/api/allpost/:id", controller.Detailpost)
-	app.Get("/api/update/:id", controller.UpdatePost)
+	app.Put("/api/update/:id", controller.UpdatePost)
 	app.Get("/api/mypost", controller.MyPost)
 	app.Delete("/api/deletepost/:id", controller.DeletePost)
 	app.Post("/api/upload-image", controller.UploadImage)

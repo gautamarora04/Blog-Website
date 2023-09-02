@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"time"
 
 	"github.com/gautamarora04/database"
 	"github.com/gautamarora04/models"
@@ -16,15 +17,20 @@ func CreatePost(c *fiber.Ctx) error {
 	if err := c.BodyParser(&BlogPost); err != nil {
 		fmt.Println("Error in body Parsing")
 	}
+	currentTime := time.Now()
+	currentTimeStr := currentTime.Format("2006-01-02 15:04:05")
+	BlogPost.CreatedAt = currentTimeStr
 	if err := database.DB.Create(&BlogPost).Error; err != nil {
 		c.Status(400)
 		return c.JSON(fiber.Map{
 			"message": "Error creating Payload",
 		})
 	}
+
 	c.Status(200)
 	return c.JSON(fiber.Map{
 		"message": "Post Created Successfully",
+		"time":    BlogPost,
 	})
 }
 
@@ -38,7 +44,7 @@ func AllPost(c *fiber.Ctx) error {
 	database.DB.Model(&models.Blog{}).Count(&total)
 	return c.JSON(fiber.Map{
 		"data": getblog,
-		"meta": fiber.Map{
+		"meta": fiber.Map{	
 			"page":      page,
 			"total":     total,
 			"last_page": math.Ceil(float64(int(total) / limit)),
@@ -92,7 +98,7 @@ func DeletePost(c *fiber.Ctx) error {
 	database.DB.Delete(&blog)
 	c.Status(200)
 	return c.JSON(fiber.Map{
-		"message": "Post Delete Successfully",
+		"message": "Post Deleted Successfully",
 	})
 
 }
