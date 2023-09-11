@@ -44,10 +44,10 @@ func AllPost(c *fiber.Ctx) error {
 	database.DB.Model(&models.Blog{}).Count(&total)
 	return c.JSON(fiber.Map{
 		"data": getblog,
-		"meta": fiber.Map{	
+		"meta": fiber.Map{
 			"page":      page,
 			"total":     total,
-			"last_page": math.Ceil(float64(int(total) / limit)),
+			"last_page": math.Ceil(float64(int(total)/limit) + float64(int(total)%limit)),
 		},
 	})
 }
