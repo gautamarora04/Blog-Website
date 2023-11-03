@@ -8,7 +8,7 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 
-const reactPublicFolder = "C:/Users/gauta/Downloads/reactlogin-master/reactlogin-master/public"
+const reactPublicFolder = "D:/Blog Website-Frontend/reactlogin-master/public/"
 
 // we will add random string in start of file name so that it will not create any overlap with images with same name
 

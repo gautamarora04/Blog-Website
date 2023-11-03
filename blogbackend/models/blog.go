@@ -7,4 +7,5 @@ type Blog struct {
 	Image       string `json:"image"`
 	UserID      string `json:"userid"`
 	User        User   `json:"user";gorm:"foreignkey:UserID"`
+	CreatedAt   string `json:"createdat"`
 }
