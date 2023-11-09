@@ -2,6 +2,10 @@
 
 Collective Insights is a blog-website developed using Golang, React Js and Tailwind CSS where everyone can uncover fresh perspectives, ideas, and knowledge through the power of blogs.
 
+# Frontend Link
+
+(https://github.com/gautamarora04/Blog-Website-Frontend)
+
 ## REST APIs 
 
 ```python
